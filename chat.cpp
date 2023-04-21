@@ -36,7 +36,6 @@ void Chat::reg(LoginName login, std::string const password)
   }
 }
 
-
 void Chat::del(LoginName login)
 {
   size_t index = -1, i = 0;
