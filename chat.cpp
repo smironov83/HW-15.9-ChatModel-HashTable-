@@ -22,7 +22,8 @@ void Chat::reg(LoginName login, std::string const password)
       if (_array[index]._status != enPairStatus::engaged)
         break;
     }
-    
+    if (i >= _mem_size) return; //Место отутствует
+
     //Если место отсутствует увеличивает хеш-таблицу вдвое, иначе добавляет
     if (i >= _mem_size) 
     {
@@ -30,10 +31,10 @@ void Chat::reg(LoginName login, std::string const password)
       reg(login, password);
     }
     else {
-      _array[index] = AuthData(login, password);
-      _count++;
-    }
+    _array[index] = AuthData(login, password);
+    _count++;
   }
+}
 }
 
 void Chat::del(LoginName login)
@@ -53,7 +54,8 @@ void Chat::del(LoginName login)
     }
     else 
       if (_array[index]._status == enPairStatus::free) 
-        return; 
+      return;
+    }
   }
 }
 
@@ -63,7 +65,8 @@ auto Chat::find(LoginName login)->std::string const
     size_t index = hash_func(login, i);
     if (_array[index]._status == enPairStatus::engaged &&
       !strcmp(_array[index]._login, login)) 
-          return _array[index]._password;
+      return _array[index]._password;
+    }
     else if (_array[index]._status == enPairStatus::free) {
       return "Login не найден!!!";
     }
@@ -109,6 +112,7 @@ auto Chat::hash_func(LoginName login, size_t offset)->size_t
     sum += login[i];
 
   //Метод умножения
+  const double A = 0.618033;
   sum = int(LOGINLENGTH * (HASHCOEFMULTI * sum - int(HASHCOEFMULTI * sum)));
 
   //Квадратичные пробы

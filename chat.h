@@ -35,6 +35,7 @@ private:
   {
     //Конструктор по умолчанию
     AuthData();
+
     //Конструктор копирования
     AuthData(LoginName login, std::string const password);
     //Оператор присваивания
