@@ -93,9 +93,17 @@ void Chat::resize()
 
 void Chat::delDeleted()
 {
-  for (size_t i = 0; i < _mem_size; ++i)
-    if (_array[i]._status == enPairStatus::deleted)
-      _array[i] = AuthData();
+  AuthData* save = _array;
+  _array = new AuthData[_mem_size];
+  _count = 0;
+
+  for (size_t i = 0; i < _mem_size; i++)
+  {
+    AuthData& old_pair = save[i];
+    if (old_pair._status == enPairStatus::engaged)
+      reg(old_pair._login, old_pair._password);
+  }
+  delete[] save;
 }
 
 auto Chat::get_memsize() const->size_t

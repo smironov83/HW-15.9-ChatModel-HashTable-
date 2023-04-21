@@ -5,7 +5,9 @@ auto main() -> int
 {
   system("chcp 1251");
   system("cls");
-
+  //Инициализирует хеш-таблицу 20 парами, при изначальном размере таблицы
+  //10 элементов, что инициирует увеличение размера таблицы с перехешированием
+  //пар 
   Chat users;
   users.reg((char*)"qwerty1", "qwerty");
   users.reg((char*)"qwerty2", "qwerty");
@@ -28,10 +30,15 @@ auto main() -> int
   users.reg((char*)"qwerty19", "qwerty6");
   users.reg((char*)"qwerty20", "qwerty6");
 
+  //Удаляет больше половины пар из хеш-таблицы, что инициирует очистку таблицы 
+  //от удаленных элементов и ее перехеширование.
   for (size_t i = 0; i <= users.get_memsize() / 2; ++i)
     users.del(users.get_array_login(i));
+  //Ищем удаленную пару по логину и выводим результат на экран
   std::cout << users.find((char*)"qwerty1") << std::endl;
+  //Ищем оставшуюся после всех операций пару и выводим результат на экран
   std::cout << users.find((char*)"qwerty20") << std::endl;
+  //Выводим на экран окончательной размер хеш-таблицы после всех манипуляций
   std::cout << users.get_memsize() << std::endl;
 
   return 0;
