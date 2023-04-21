@@ -22,6 +22,18 @@ void Chat::reg(LoginName login, std::string const password)
       if (_array[index]._status != enPairStatus::engaged)
         break;
     }
+
+    // ладет в свободную €чейку пару
+    _array[index] = AuthData(login, password);
+    _count++;
+=========
+    
+
+    // ладет в свободную €чейку пару
+    _array[index] = AuthData(login, password);
+    _count++;
+=========
+    
     //≈сли место отсутствует увеличивает хеш-таблицу вдвое, иначе добавл€ет
     if (i >= _mem_size)
     {
