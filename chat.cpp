@@ -22,28 +22,31 @@ void Chat::reg(LoginName login, std::string const password)
       if (_array[index]._status != enPairStatus::engaged)
         break;
     }
-    
     //Если место отсутствует увеличивает хеш-таблицу вдвое, иначе добавляет
-    if (i >= _mem_size) 
+    if (i >= _mem_size)
     {
       resize();
       reg(login, password);
     }
-    else {
+    else
+    {
       _array[index] = AuthData(login, password);
       _count++;
     }
   }
 }
 
+
 void Chat::del(LoginName login)
 {
   size_t index = -1, i = 0;
   //Берет пробы по всем i от 0 до размера массива
-  for (; i < _mem_size; i++) {
+  for (; i < _mem_size; i++) 
+  {
     index = hash_func(login, i);
     if (_array[index]._status == enPairStatus::engaged &&
-      !strcmp(_array[index]._login, login)) {
+      !strcmp(_array[index]._login, login)) 
+    {
       _array[index]._status = enPairStatus::deleted;
       _count--;
       _delCount++;
@@ -53,20 +56,21 @@ void Chat::del(LoginName login)
     }
     else 
       if (_array[index]._status == enPairStatus::free) 
-        return; 
+        return;
   }
 }
 
 auto Chat::find(LoginName login)->std::string const
 {
-  for (size_t i = 0; i < _mem_size; i++) {
+  for (size_t i = 0; i < _mem_size; i++) 
+  {
     size_t index = hash_func(login, i);
     if (_array[index]._status == enPairStatus::engaged &&
       !strcmp(_array[index]._login, login)) 
-          return _array[index]._password;
-    else if (_array[index]._status == enPairStatus::free) {
-      return "Login не найден!!!";
-    }
+      return _array[index]._password;
+    else 
+      if (_array[index]._status == enPairStatus::free) 
+        return "Login не найден!!!";
   }
   return "Login не найден!!!";
 }
@@ -109,6 +113,7 @@ auto Chat::hash_func(LoginName login, size_t offset)->size_t
     sum += login[i];
 
   //Метод умножения
+  const double A = 0.618033;
   sum = int(LOGINLENGTH * (HASHCOEFMULTI * sum - int(HASHCOEFMULTI * sum)));
 
   //Квадратичные пробы
@@ -120,9 +125,7 @@ _status(enPairStatus::free) {}
 
 Chat::AuthData::AuthData(LoginName login, std::string const password) :
   _password(password), _status(enPairStatus::engaged)
-{
-  strcpy_s(_login, login);
-}
+{ strcpy_s(_login, login); }
 
 auto Chat::AuthData::operator=(const Chat::AuthData& other)->Chat::AuthData&
 {
